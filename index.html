@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이력서 | 위영우 - 예비 개인정보보호 컨설턴트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#1e293b',
+                            light: '#334155',
+                            dark: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Pretendard"', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
+    <style>
+        body {
+            font-family: 'Pretendard Variable', Pretendard, Inter, sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            border: 2px solid white;
+            box-shadow: 0 0 0 4px #eff6ff;
+            z-index: 10;
+        }
+
+        .cert-card {
+            background: linear-gradient(145deg, #ffffff, #fdfdfd);
+            box-shadow: inset 0 2px 4px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .pdf-link:hover i {
+            transform: scale(1.1);
+        }
+
+        /* PDF 모달 */
+        .pdf-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .pdf-modal.show {
+            display: flex;
+        }
+
+        .pdf-modal-content {
+            width: min(700px, 96vw);
+            max-height: 90vh;
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.28);
+            display: flex;
+            flex-direction: column;
+            animation: modalFadeIn 0.2s ease;
+        }
+
+        .pdf-modal-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #f8fafc;
+            overflow-y: auto;
+            max-height: 85vh;
+        }
+
+        .pdf-modal-body img {
+            max-width: 100%;
+            max-height: 80vh;   /* ← 이 줄 추가 */
+            height: auto;
+         border-radius: 12px;
+            object-fit: contain;
+         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 닫기 버튼 (우상단 플로팅) */
+        .pdf-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #334155;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+
+        .pdf-modal-close:hover {
+            background: #e2e8f0;
+            transform: scale(1.05);
+        }
+
+        .pdf-modal-content {
+            position: relative;
+        }
+
+        .body-lock {
+            overflow: hidden;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pdf-modal {
+                padding: 12px;
+            }
+
+            .pdf-modal-content {
+                width: 100%;
+                max-height: 92vh;
+                border-radius: 18px;
+            }
+
+            .pdf-modal-body {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="text-slate-700 antialiased leading-relaxed md:flex min-h-screen selection:bg-blue-500 selection:text-white">
+
+    <!-- 좌측 사이드바 (Sidebar - 25% ~ 30%) -->
+    <aside
+        class="w-full md:w-[30%] lg:w-[25%] bg-white border-r border-slate-200 p-8 md:p-10 flex flex-col items-center md:fixed md:h-screen md:overflow-y-auto z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+
+        <!-- 프로필 이미지 -->
+        <div class="relative w-44 h-44 rounded-full p-2 bg-gradient-to-tr from-blue-100 to-indigo-100 mb-6 shadow-sm">
+            <div class="w-full h-full rounded-full overflow-hidden bg-slate-200 border-4 border-white shadow-inner">
+                <img src="profile.jpg" alt="위영우 프로필" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute bottom-3 right-3 w-5 h-5 bg-green-400 border-4 border-white rounded-full"></div>
+        </div>
+
+        <!-- 이름 및 직무 -->
+        <h1 class="text-3xl font-extrabold text-navy mb-2 tracking-tight">위영우</h1>
+        <div
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-10 shadow-sm">
+            <span class="text-sm font-bold text-blue-700">예비 개인정보보호 컨설턴트</span>
+        </div>
+
+        <!-- 연락처 정보 -->
+        <div class="w-full space-y-3 mb-12">
+            <div
+                class="flex items-center gap-4 p-3.5 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                <div
+                    class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-blue-500 group-hover:text-white group-hover:shadow-md transition-all">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div class="text-sm font-semibold text-slate-700 break-all">dnlduddn001@naver.com</div>
+            </div>
+            <div
+                class="flex items-center gap-4 p-3.5 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                <div
+                    class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-blue-500 group-hover:text-white group-hover:shadow-md transition-all">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <div class="text-sm font-semibold text-slate-700">010-6304-4319</div>
+            </div>
+            <div
+                class="flex items-center gap-4 p-3.5 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                <div
+                    class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-blue-500 group-hover:text-white group-hover:shadow-md transition-all">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <div class="text-sm font-semibold text-slate-700 break-keep">충청남도 천안시 서북구 불당동 공원로 195</div>
+            </div>
+        </div>
+
+        <!-- LinkedIn 버튼 -->
+        <a href="https://www.linkedin.com/in/영우-위-7273483b0" target="_blank"
+            class="w-full flex items-center justify-between px-6 py-4 bg-[#0A66C2] text-white font-medium rounded-xl hover:bg-[#004182] hover:-translate-y-0.5 transition-all shadow-lg shadow-blue-500/20 group">
+            <div class="flex items-center gap-3">
+                <i class="fa-brands fa-linkedin text-2xl"></i>
+                <span>LinkedIn Profile</span>
+            </div>
+            <i
+                class="fa-solid fa-arrow-right opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all"></i>
+        </a>
+    </aside>
+
+    <!-- 우측 메인 콘텐츠 -->
+    <main class="w-full md:w-[70%] lg:w-[75%] md:ml-[30%] lg:ml-[25%] p-6 md:p-12 lg:p-16 xl:p-24 relative">
+
+        <div class="max-w-5xl mx-auto space-y-16">
+
+            <!-- 자기소개 -->
+            <section
+                class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200/60 relative overflow-hidden group hover:shadow-md transition-shadow">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-blue-400 to-indigo-500"></div>
+                <h2 class="text-2xl font-extrabold text-navy mb-6 flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-500 transition-colors">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+                    Profile Summary
+                </h2>
+                <p class="text-slate-600 text-lg leading-relaxed font-medium pb-2">
+                    사이버보안공학을 전공하며 개인정보 보호 및 정보보호 컨설팅 분야를 목표로 역량을 쌓고 있습니다.<br>
+                    CPPG, ISO/IEC 42001 자격 취득과 다양한 정보보호 교육을 통해 개인정보 관리체계와 보안 거버넌스에 대한 이해를 갖추었습니다.<br>
+                    또한 보안 교육과 프로젝트 경험을 통해 기술적 보안과 관리적 보안을 함께 이해하는 보안 인재로 성장하고 있습니다.
+                </p>
+            </section>
+
+            <!-- 학력 -->
+            <section
+                class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200/60 hover:shadow-md transition-shadow group">
+                <h2 class="text-2xl font-extrabold text-navy mb-8 flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 group-hover:bg-indigo-500 group-hover:text-white group-hover:border-indigo-500 transition-colors">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </span>
+                    Education
+                </h2>
+                <div class="relative pl-8 border-l-2 border-slate-100 space-y-10">
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-slate-800 mb-1">건양대학교</h3>
+                                <p class="text-indigo-600 font-bold mb-3">사이버보안공학과 (4학년 재학중)</p>
+                                <div
+                                    class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg text-sm font-bold text-slate-600 border border-slate-200">
+                                    <i class="fa-solid fa-star text-yellow-500"></i> 학점: 3.7 / 4.5
+                                </div>
+                            </div>
+                            <div
+                                class="text-slate-500 font-bold bg-slate-50 px-4 py-2 rounded-xl text-sm border border-slate-200 shadow-sm whitespace-nowrap">
+                                <i class="fa-regular fa-calendar mr-2"></i> 2021. 03 - 현재
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 활동 사항 -->
+            <section
+                class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200/60 hover:shadow-md transition-shadow group">
+                <h2 class="text-2xl font-extrabold text-navy mb-8 flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 group-hover:bg-teal-500 group-hover:text-white group-hover:border-teal-500 transition-colors">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </span>
+                    Activities
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div
+                        class="cert-card p-6 rounded-2xl border border-slate-200 hover:border-teal-300 hover:shadow-lg hover:-translate-y-1 transition-all group/card">
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
+                            <div
+                                class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 group-hover/card:bg-teal-500 group-hover/card:text-white transition-colors">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <div
+                                class="inline-flex items-center px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-extrabold rounded-full border border-yellow-200">
+                                <i class="fa-solid fa-crown mr-1"></i> 4등 수상
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">KY Hackathon 학술제 발표</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mt-auto">
+                            해커톤에 참여하여 기획 및 개발한 프로젝트를 성공적으로 발표하고 수상하는 성과를 거두었습니다.
+                        </p>
+                    </div>
+
+                    <div
+                        class="cert-card p-6 rounded-2xl border border-slate-200 hover:border-teal-300 hover:shadow-lg hover:-translate-y-1 transition-all group/card">
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
+                            <div
+                                class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 group-hover/card:bg-teal-500 group-hover/card:text-white transition-colors">
+                                <i class="fa-solid fa-server"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">클라우드 보안 및 디지털포렌식 실습 참여</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mt-auto">
+                            상명대 CTF 대회 전 진행된 강의에 참여하여 클라우드 환경의 취약점과 포렌식 실무 역량을 배양했습니다.
+                        </p>
+                    </div>
+
+                    <div
+                        class="cert-card p-6 rounded-2xl border border-slate-200 hover:border-teal-300 hover:shadow-lg hover:-translate-y-1 transition-all group/card md:col-span-2 relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 text-slate-50 opacity-50 rotate-12">
+                            <i class="fa-solid fa-bug-slash text-9xl"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100/50">
+                                <div
+                                    class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 group-hover/card:bg-teal-500 group-hover/card:text-white transition-colors">
+                                    <i class="fa-solid fa-shield-virus"></i>
+                                </div>
+                                <span
+                                    class="text-xs font-bold text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">온·오프라인
+                                    각 1회</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">CTF 해킹대회 경험</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed max-w-2xl">
+                                웹 취약점 분석 및 모의침투 과제를 해결하며 실전 감각을 키우고, 화이트햇(White-hat) 관점의 공격-방어 시나리오를 직접 경험했습니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="cert-card p-6 rounded-2xl border border-slate-200 hover:border-teal-300 hover:shadow-lg hover:-translate-y-1 transition-all group/card">
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
+                            <div
+                                class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 group-hover/card:bg-teal-500 group-hover/card:text-white transition-colors">
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                            </div>
+                            <span
+                                class="text-xs font-bold text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">2025</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">미래인재 양성교육 멘토</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mt-auto">
+                            건양대학교 제3기 미래인재 양성교육 멘토로 활동하며 학습 지원 및 운영을 보조했습니다.
+                        </p>
+                    </div>
+
+                    <div
+                        class="cert-card p-6 rounded-2xl border border-slate-200 hover:border-teal-300 hover:shadow-lg hover:-translate-y-1 transition-all group/card">
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
+                            <div
+                                class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 border border-teal-100 group-hover/card:bg-teal-500 group-hover/card:text-white transition-colors">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <span
+                                class="text-xs font-bold text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">2024</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">학생회 홍보부 임원</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mt-auto">
+                            건양대학교 스마트보안학과 학생회 임원으로 학과 행사 및 보안 이슈를 교내외에 알리는 데 기여했습니다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 교육 이수 -->
+            <section
+                class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200/60 hover:shadow-md transition-shadow group">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <h2 class="text-2xl font-extrabold text-navy flex items-center gap-3">
+                        <span
+                            class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-colors">
+                            <i class="fa-solid fa-book-open"></i>
+                        </span>
+                        Training
+                    </h2>
+                    <span class="text-xs text-slate-400 bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
+                        <i class="fa-solid fa-circle-info mr-1"></i> 수료증 버튼을 클릭하면 화면에서 바로 확인할 수 있습니다.
+                    </span>
+                </div>
+
+                <div class="relative pl-8 border-l-2 border-slate-100 space-y-12 pb-4">
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-bold text-slate-800">개인정보보호법 개정 내용 및 실무적용 (3H)</h3>
+                                    <a href="certs/privacy_law.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/privacy_law.jpg" data-title="개인정보보호법 개정 내용 및 실무적용 (3H)">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-medium mb-1">KISA (경기정보보지원센터)</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-desktop mr-1 text-slate-400"></i> 온라인 교육</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-slate-50 px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 11. 06
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-bold text-slate-800">정보보안 입문 (웹·리버싱·포렌식·포너블)</h3>
+                                    <a href="certs/security_intro.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/security_intro.jpg" data-title="정보보안 입문 (웹·리버싱·포렌식·포너블)">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-medium mb-1">상명대학교 천안 캠퍼스 주관</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i> 교내 강의실</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-slate-50 px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 09. 27
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-bold text-slate-800">웹 취약점 기반 침투테스트</h3>
+                                    <a href="certs/web_penetration.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/web_penetration.jpg" data-title="웹 취약점 기반 침투테스트">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-medium mb-1">상명대학교 주관</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i> 교내 강의실</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-slate-50 px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 09. 27
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1 bg-blue-50/50 p-5 border border-blue-100 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-extrabold text-blue-800">K-Shield 주니어 기초과정 [16차] (80시간)</h3>
+                                    <a href="certs/kshield_junior.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-white hover:bg-blue-50 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/kshield_junior.jpg" data-title="K-Shield 주니어 기초과정 [16차] (80시간)">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-bold mb-1">KSIA / 한국인터넷진흥원(KISA)</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-desktop mr-1 text-slate-400"></i> 온라인 교육</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-white px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 09. 02 - 09. 15
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-bold text-slate-800">Digital forensics</h3>
+                                    <a href="certs/digital_forensics.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/digital_forensics.jpg" data-title="Digital forensics">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-medium mb-1">The Open University (Digital Evidence 수집·분석 및 보고 관련)</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-desktop mr-1 text-slate-400"></i> 온라인 교육</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-slate-50 px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 09. 03
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-bold text-slate-800">사이버 포렌식 실전 과정</h3>
+                                    <a href="certs/cyber_forensics.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/cyber_forensics.jpg" data-title="사이버 포렌식 실전 과정">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-medium mb-1">중부보호지원센터</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-desktop mr-1 text-slate-400"></i> 온라인 교육</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-slate-50 px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 08. 21
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-bold text-slate-800">[온택트 융합보안] 디지털포렌식 1차 (2H)</h3>
+                                    <a href="certs/ontact_forensics.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/ontact_forensics.jpg" data-title="[온택트 융합보안] 디지털포렌식 1차 (2H)">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-medium mb-1">과학기술정보통신부 / KISIA</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-desktop mr-1 text-slate-400"></i> 온라인 교육</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-slate-50 px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 06. 25 - 07. 15
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-bold text-slate-800">[온택트 융합보안] 융합보안개론 1차 (2H)</h3>
+                                    <a href="certs/ontact_intro.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded shadow-sm border border-blue-200 transition-colors"
+                                        data-img="certs/ontact_intro.jpg" data-title="[온택트 융합보안] 융합보안개론 1차 (2H)">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-medium mb-1">과학기술정보통신부 / KISIA</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-desktop mr-1 text-slate-400"></i> 온라인 교육</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-slate-50 px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2025. 05. 21 - 06. 10
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-dot">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4 transition-all">
+                            <div class="flex-1 bg-indigo-50/50 p-5 border border-indigo-100 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="absolute top-0 right-0 w-1 h-full bg-indigo-400"></div>
+                                <div class="flex items-center gap-3 flex-wrap mb-1">
+                                    <h3 class="text-lg font-extrabold text-indigo-800">[초급] 침해사고 대응훈련 MITRE ATT&CK 활용 [6차] (14시간)</h3>
+                                    <a href="certs/mitre_attack.jpg"
+                                        class="open-cert pdf-link inline-flex items-center px-2 py-0.5 bg-white hover:bg-indigo-50 text-indigo-600 text-xs font-bold rounded shadow-sm border border-indigo-200 transition-colors"
+                                        data-img="certs/mitre_attack.jpg" data-title="[초급] 침해사고 대응훈련 MITRE ATT&CK 활용 [6차] (14시간)">
+                                        <i class="fa-solid fa-link mr-1.5 transition-transform"></i> 수료증 확인
+                                    </a>
+                                </div>
+                                <p class="text-slate-600 font-bold mb-1">한국인터넷진흥원(KISA)</p>
+                                <p class="text-sm text-slate-500"><i class="fa-solid fa-desktop mr-1 text-slate-400"></i> 온라인 교육</p>
+                            </div>
+                            <div class="text-slate-500 font-bold bg-white px-3 py-1.5 rounded-lg text-sm border border-slate-200 shadow-sm whitespace-nowrap mt-2 md:mt-0">
+                                2024. 05. 22 - 05. 28
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 자격증 -->
+            <section
+                class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200/60 hover:shadow-md transition-shadow group">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <h2 class="text-2xl font-extrabold text-navy flex items-center gap-3">
+                        <span
+                            class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 group-hover:bg-rose-500 group-hover:text-white group-hover:border-rose-500 transition-colors">
+                            <i class="fa-solid fa-certificate"></i>
+                        </span>
+                        Certifications
+                    </h2>
+                    <span class="text-xs text-slate-400 bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
+                        <i class="fa-solid fa-circle-info mr-1"></i> 증명서 버튼을 클릭하면 화면에서 바로 확인할 수 있습니다.
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div
+                        class="cert-card flex items-start flex-col gap-2 p-5 rounded-2xl border border-slate-200 hover:border-rose-300 hover:shadow-lg hover:-translate-y-1 transition-all group/cert">
+                        <div class="flex items-center gap-4 w-full">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-rose-500 text-xl flex-shrink-0 group-hover/cert:scale-110 group-hover/cert:bg-rose-500 group-hover/cert:text-white transition-all">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div class="pt-0.5">
+                                <h3 class="text-base font-extrabold text-slate-800 mb-1 leading-tight">ISO/IEC 42001:2023 Training Course</h3>
+                                <p class="text-slate-500 text-xs font-semibold mb-2">Bureau Veritas Korea</p>
+                                <span class="text-slate-400 text-[11px] font-bold bg-slate-100 px-2.5 py-1 rounded inline-block">2026. 01. 15</span>
+                            </div>
+                        </div>
+                        <a href="certs/iso_42001.jpg"
+                            class="open-cert w-full mt-2 text-center py-2 bg-slate-50 hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-sm font-bold rounded-xl border border-slate-200 hover:border-rose-200 transition-colors"
+                            data-img="certs/iso_42001.jpg" data-title="ISO/IEC 42001:2023 Training Course">
+                            <i class="fa-solid fa-file-contract mr-1"></i> 증명서 보기
+                        </a>
+                    </div>
+
+                    <div
+                        class="cert-card flex items-start flex-col gap-2 p-5 rounded-2xl border border-slate-200 hover:border-rose-300 hover:shadow-lg hover:-translate-y-1 transition-all group/cert">
+                        <div class="flex items-center gap-4 w-full">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-rose-500 text-xl flex-shrink-0 group-hover/cert:scale-110 group-hover/cert:bg-rose-500 group-hover/cert:text-white transition-all">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div class="pt-0.5">
+                                <h3 class="text-base font-extrabold text-slate-800 mb-1 leading-tight">개인정보관리사 (CPPG)</h3>
+                                <p class="text-slate-500 text-xs font-semibold mb-2">한국CPO포럼</p>
+                                <span class="text-slate-400 text-[11px] font-bold bg-slate-100 px-2.5 py-1 rounded inline-block">2025. 12. 24</span>
+                            </div>
+                        </div>
+                        <a href="certs/cppg.jpg"
+                            class="open-cert w-full mt-2 text-center py-2 bg-slate-50 hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-sm font-bold rounded-xl border border-slate-200 hover:border-rose-200 transition-colors"
+                            data-img="certs/cppg.jpg" data-title="개인정보관리사 (CPPG)">
+                            <i class="fa-solid fa-file-contract mr-1"></i> 증명서 보기
+                        </a>
+                    </div>
+
+                    <div
+                        class="cert-card flex items-start flex-col gap-2 p-5 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-lg hover:-translate-y-1 transition-all group/cert">
+                        <div class="flex items-center gap-4 w-full">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-blue-500 text-xl flex-shrink-0 group-hover/cert:scale-110 group-hover/cert:bg-blue-500 group-hover/cert:text-white transition-all">
+                                <i class="fa-solid fa-cloud"></i>
+                            </div>
+                            <div class="pt-0.5">
+                                <h3 class="text-base font-extrabold text-slate-800 mb-1 leading-tight">NAVER Cloud Platform Certified Associate</h3>
+                                <p class="text-slate-500 text-xs font-semibold mb-2">NAVER CLOUD</p>
+                                <span class="text-slate-400 text-[11px] font-bold bg-slate-100 px-2.5 py-1 rounded inline-block">2025. 05. 23</span>
+                            </div>
+                        </div>
+                        <a href="certs/ncp_associate.jpg"
+                            class="open-cert w-full mt-2 text-center py-2 bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-600 text-sm font-bold rounded-xl border border-slate-200 hover:border-blue-200 transition-colors"
+                            data-img="certs/ncp_associate.jpg" data-title="NAVER Cloud Platform Certified Associate">
+                            <i class="fa-solid fa-file-contract mr-1"></i> 증명서 보기
+                        </a>
+                    </div>
+
+                    <div
+                        class="cert-card flex items-start flex-col gap-2 p-5 rounded-2xl border border-slate-200 hover:border-emerald-400 hover:shadow-lg hover:-translate-y-1 transition-all group/cert">
+                        <div class="flex items-center gap-4 w-full">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-emerald-500 text-xl flex-shrink-0 group-hover/cert:scale-110 group-hover/cert:bg-emerald-500 group-hover/cert:text-white transition-all">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                            <div class="pt-0.5">
+                                <h3 class="text-base font-extrabold text-slate-800 mb-1 leading-tight">네트워크관리사 2급</h3>
+                                <p class="text-slate-500 text-xs font-semibold mb-2">한국정보통신자격협회</p>
+                                <span class="text-slate-400 text-[11px] font-bold bg-slate-100 px-2.5 py-1 rounded inline-block">2024. 10. 08</span>
+                            </div>
+                        </div>
+                        <a href="certs/network_admin_2.jpg"
+                            class="open-cert w-full mt-2 text-center py-2 bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-600 text-sm font-bold rounded-xl border border-slate-200 hover:border-emerald-200 transition-colors"
+                            data-img="certs/network_admin_2.jpg" data-title="네트워크관리사 2급">
+                            <i class="fa-solid fa-file-contract mr-1"></i> 증명서 보기
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 수상 이력 -->
+            <section
+                class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200/60 hover:shadow-md transition-shadow group/award">
+                <h2 class="text-2xl font-extrabold text-navy mb-8 flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 border border-slate-200 group-hover/award:bg-yellow-500 group-hover/award:text-white group-hover/award:border-yellow-500 transition-colors">
+                        <i class="fa-solid fa-trophy"></i>
+                    </span>
+                    Awards
+                </h2>
+
+                <div
+                    class="cert-card p-6 md:p-8 rounded-2xl border border-yellow-200/60 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-yellow-400 hover:shadow-lg transition-all relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-yellow-50 opacity-40 rotate-12">
+                        <i class="fa-solid fa-medal text-9xl"></i>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-full border border-yellow-200 mb-3">
+                            <i class="fa-solid fa-crown"></i> 수상
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-800 mb-2">건양대학교 총장상 (K 국방산업)</h3>
+                        <p class="text-slate-700 font-bold mb-2">2025 충청권 대학(원)생 사이버위협 시나리오 공모전</p>
+                        <p class="text-sm font-semibold text-slate-500 flex items-center gap-2">
+                            <i class="fa-solid fa-building text-slate-400"></i> KISTI (한국과학기술정보연구원), 국가정보원
+                        </p>
+                    </div>
+
+                    <div
+                        class="relative z-10 flex-shrink-0 text-slate-500 font-bold bg-white px-5 py-3 rounded-xl border border-slate-200 shadow-sm">
+                        2025. 09
+                    </div>
+                        <a href="https://www.chungnamilbo.co.kr/news/articleView.html?idxno=847733"
+        target="_blank"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 text-sm font-bold rounded-xl border border-yellow-200 hover:border-yellow-400 transition-all shadow-sm">
+        <i class="fa-solid fa-newspaper"></i> 충남일보 기사 보기
+    </a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- 이미지 모달 -->
+    <div id="certModal" class="pdf-modal">
+        <div class="pdf-modal-content">
+            <button id="certModalClose" class="pdf-modal-close" aria-label="닫기">✕</button>
+            <div class="pdf-modal-body">
+                <img id="certViewer" src="" alt="수료증">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const certModal = document.getElementById('certModal');
+        const certViewer = document.getElementById('certViewer');
+        const certModalClose = document.getElementById('certModalClose');
+
+        function openCertModal(imgUrl, title) {
+            certViewer.src = imgUrl;
+            certViewer.alt = title || '수료증';
+            certModal.classList.add('show');
+            document.body.classList.add('body-lock');
+        }
+
+        function closeCertModal() {
+            certModal.classList.remove('show');
+            certViewer.src = '';
+            document.body.classList.remove('body-lock');
+        }
+
+        document.querySelectorAll('.open-cert').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const imgUrl = this.getAttribute('data-img');
+                const title = this.getAttribute('data-title');
+                openCertModal(imgUrl, title);
+            });
+        });
+
+        certModalClose.addEventListener('click', closeCertModal);
+
+        certModal.addEventListener('click', function (e) {
+            if (e.target === certModal) {
+                closeCertModal();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && certModal.classList.contains('show')) {
+                closeCertModal();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

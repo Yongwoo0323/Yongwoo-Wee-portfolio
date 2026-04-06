@@ -241,6 +241,16 @@
             <i
                 class="fa-solid fa-arrow-right opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all"></i>
         </a>
+
+        <a href="https://github.com/Yongwoo0323" target="_blank"
+            class="w-full flex items-center justify-between px-6 py-4 bg-slate-800 text-white font-medium rounded-xl hover:bg-slate-900 hover:-translate-y-0.5 transition-all shadow-lg shadow-slate-500/20 group mt-3">
+            <div class="flex items-center gap-3">
+                <i class="fa-brands fa-github text-2xl"></i>
+                <span>GitHub Profile</span>
+            </div>
+            <i class="fa-solid fa-arrow-right opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all"></i>
+        </a>
+
     </aside>
 
     <!-- 우측 메인 콘텐츠 -->
@@ -324,6 +334,12 @@
                         <p class="text-slate-500 text-sm leading-relaxed mt-auto">
                             해커톤에 참여하여 기획 및 개발한 프로젝트를 성공적으로 발표하고 수상하는 성과를 거두었습니다.
                         </p>
+                        <a href="#"
+                            class="open-gallery mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-600 text-xs font-bold rounded-lg border border-teal-200 hover:border-teal-400 transition-colors"
+                            data-title="KY Hackathon 학술제 발표"
+                            data-images="images/one.jpg,images/two.jpg,images/three.jpg,images/four.jpg">
+                            <i class="fa-solid fa-images"></i> 활동 사진 보기
+                        </a>
                     </div>
 
                     <div
@@ -359,6 +375,10 @@
                             <p class="text-slate-500 text-sm leading-relaxed max-w-2xl">
                                 웹 취약점 분석 및 모의침투 과제를 해결하며 실전 감각을 키우고, 화이트햇(White-hat) 관점의 공격-방어 시나리오를 직접 경험했습니다.
                             </p>
+                            <a href="https://www.ccdailynews.com/news/articleView.html?idxno=2370977" target="_blank"
+    class="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-600 text-xs font-bold rounded-lg border border-teal-200 hover:border-teal-400 transition-colors">
+    <i class="fa-solid fa-newspaper"></i> 관련 기사 보기
+</a>
                         </div>
                     </div>
 
@@ -376,6 +396,12 @@
                         <p class="text-slate-500 text-sm leading-relaxed mt-auto">
                             건양대학교 제3기 미래인재 양성교육 멘토로 활동하며 학습 지원 및 운영을 보조했습니다.
                         </p>
+                        <a href="#"
+    class="open-gallery mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-600 text-xs font-bold rounded-lg border border-teal-200 hover:border-teal-400 transition-colors"
+    data-title="미래인재 양성교육 멘토"
+    data-images="images/mentor1.jpg,images/mentor2.jpg,images/mentor3.jpg,images/mentor4.jpg">
+    <i class="fa-solid fa-images"></i> 활동 사진 보기
+</a>
                     </div>
 
                     <div
@@ -392,6 +418,12 @@
                         <p class="text-slate-500 text-sm leading-relaxed mt-auto">
                             건양대학교 스마트보안학과 학생회 임원으로 학과 행사 및 보안 이슈를 교내외에 알리는 데 기여했습니다.
                         </p>
+                        <a href="#"
+    class="open-gallery mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-600 text-xs font-bold rounded-lg border border-teal-200 hover:border-teal-400 transition-colors"
+    data-title="학생회 홍보부 임원"
+    data-images="images/pr1.jpg,images/pr2.jpg,images/pr3.png,images/pr4.jpg">
+    <i class="fa-solid fa-images"></i> 활동 사진 보기
+</a>
                     </div>
                 </div>
             </section>
@@ -792,6 +824,67 @@
                 closeCertModal();
             }
         });
+        // 갤러리 모달
+document.querySelectorAll('.open-gallery').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const title = this.getAttribute('data-title');
+                const galleryImages = this.getAttribute('data-images').split(',');
+
+                const existing = document.getElementById('galleryModal');
+                if (existing) existing.remove();
+
+                const modal = document.createElement('div');
+                modal.id = 'galleryModal';
+                modal.className = 'pdf-modal show';
+                modal.innerHTML = `
+                    <div class="pdf-modal-content" style="width:min(800px,96vw); max-height:90vh; position:relative;">
+                        <button id="galleryModalClose" class="pdf-modal-close">✕</button>
+                        <div class="pdf-modal-body" style="max-height:85vh; overflow-y:auto; padding:24px;">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                ${galleryImages.map(src => `
+                                    <img src="${src}" style="width:100%; height:220px; border-radius:10px; object-fit:cover; box-shadow:0 2px 12px rgba(0,0,0,0.1); cursor:zoom-in;" onclick="openZoom('${src}')">
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                document.body.classList.add('body-lock');
+
+                document.getElementById('galleryModalClose').addEventListener('click', () => {
+                    modal.remove();
+                    document.body.classList.remove('body-lock');
+                });
+
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                        document.body.classList.remove('body-lock');
+                    }
+                });
+            });
+        });
+         function openZoom(src) {
+            const existing = document.getElementById('zoomModal');
+            if (existing) existing.remove();
+
+            const zoom = document.createElement('div');
+            zoom.id = 'zoomModal';
+            zoom.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:99999; cursor:zoom-out; padding:20px;';
+            zoom.innerHTML = `<img src="${src}" style="max-width:100%; max-height:90vh; border-radius:12px; object-fit:contain;">`;
+            document.body.appendChild(zoom);
+
+            zoom.addEventListener('click', () => zoom.remove());
+
+            document.addEventListener('keydown', function escZoom(e) {
+                if (e.key === 'Escape') {
+                    zoom.remove();
+                    document.removeEventListener('keydown', escZoom);
+                }
+            });
+        }
+
     </script>
 
 </body>
